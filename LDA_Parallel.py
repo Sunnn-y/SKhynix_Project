@@ -48,7 +48,6 @@ def get_tokens(block) :
 
   print(i,'번째 블록')
 
-
 with Parallel(n_jobs=8) as parallel : # 병렬처리 실행
     results = parallel(delayed(get_tokens)(block) for block in data_blocks)
 
