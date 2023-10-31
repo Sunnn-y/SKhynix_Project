@@ -3,6 +3,9 @@ import MeCab
 from collections import Counter
 from gensim import corpora
 from gensim.models import LdaModel, TfidfModel
+from pandas import DataFrame
+# import pyLDAvis
+# import pyLDAvis.gensim_models as gensimvis
 
 df = pd.read_csv('sk_data.csv')
 
@@ -90,7 +93,36 @@ lda = LdaModel(corpus=corpus_TFIDF,
                num_topics=n,
                random_state=100)
 
-for t in lda.print_topics(num_topics=n):
-  print(t)
+# for t in lda.print_topics(num_topics=n):
+#   print(t)
+  
 
-# print(df.head())
+# for i, topic_list in enumerate(lda[corpus_TFIDF]):
+#     if i==5:
+#         break
+#     print(i,'번째 문서의 topic 비율은',topic_list)
+
+
+
+def make_topictable_per_doc(lda, corpus):
+    topic_table = pd.DataFrame(columns=['문서 번호', '가장 비중이 높은 토픽', '가장 높은 토픽의 비중', '각 토픽의 비중'])
+
+    for i, topic_list in enumerate(lda[corpus_TFIDF]):
+        doc = topic_list[0] if lda.per_word_topics else topic_list            
+        doc = sorted(doc, key=lambda x: (x[1]), reverse=True) # 비중이 높은 순으로 토픽 정렬
+
+        for j, (topic_num, prop_topic) in enumerate(doc): #  몇 번 토픽인지와 비중을 나눠서 저장
+            if j == 0:  # 가장 비중이 높은 토픽
+                doc_num = i  # 문서 번호
+                most_topic = int(topic_num)
+                pro_topic = round(prop_topic, 4)
+                topic_lis = topic_list
+                new_row = pd.Series({'문서 번호': doc_num, '가장 비중이 높은 토픽': most_topic, '가장 높은 토픽의 비중': pro_topic, '각 토픽의 비중': topic_lis})
+                topic_table = pd.concat([topic_table, new_row.to_frame().T], ignore_index=True)
+            else:
+                break
+
+    return topic_table
+
+topictable = make_topictable_per_doc(lda, corpus_TFIDF)
+print(topictable)
