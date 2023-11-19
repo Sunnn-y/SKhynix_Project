@@ -47,7 +47,7 @@ https://puddle-sandal-0bf.notion.site/fd17d595ed954d8aaea64ce0672a8fe3?v=2b35323
 https://github.com/Sunnn-y/SKhynix_Project
 
 ## 🗂️ 대시보드
-<code><img height="500" src="SK_dashboard.png"></code>
+<code><img height="400" src="SK_dashboard.png"></code>
 
 
 ## 📃 레퍼런스
