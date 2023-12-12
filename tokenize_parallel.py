@@ -4,6 +4,7 @@ import MeCab
 # from gensim import corpora
 # from gensim.models import LdaModel, TfidfModel
 from multiprocess import Pool
+import pickle
 
 df = pd.read_csv(r'C:\Users\Hyoju\Downloads\sk_data_del.csv')
 # big_dataframe = df # 원본 데이터프레임 저장
@@ -62,7 +63,8 @@ def main():
     total = pd.concat(pool.map(get_tokens, data_blocks), ignore_index=True)
     # 결과 데이터프레임 출력 또는 다른 작업 수행
     print(total.head())  # 예시로 상위 몇 개의 행을 출력
-    total.to_csv(r'C:\\Users\\Hyoju\\Downloads\\sk_data_mecab_userdic.csv', index=False)
+    # total.to_csv(r'C:\\Users\\Hyoju\\Downloads\\sk_data_mecab_userdic.csv', index=False)
+    total.to_pickle(r'C:\\Users\\Hyoju\\Downloads\\sk_data_mecab_userdic.pkl')
 
 if __name__ == "__main__":
     main()
